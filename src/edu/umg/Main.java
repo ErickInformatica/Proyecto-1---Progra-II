@@ -48,7 +48,7 @@ public class Main {
             rolIngreso = lecturaCadena.nextLine();
             System.out.println(rolIngreso == "Soporte Tecnico");
             //Verifica el ingreso de un rol valido
-            if(rolIngreso.equals("Mesa de Ayuda")  || rolIngreso.equals("Soporte Tecnico") || rolIngreso.equals("Desarrollador")) {
+            if(rolIngreso.equals("mesa")  || rolIngreso.equals("soporte") || rolIngreso.equals("desarrollo")) {
                 exit = 1;
             } else {
                 System.out.println("Debe ingresar un rol valido de los siguiente: Mesa de Ayuda, Soporte Tecnico o Desarrollador");
@@ -65,6 +65,7 @@ public class Main {
             System.out.println("3. Mover Ticket");
             System.out.println("4. Solucion Ticket");
             System.out.println("5. Reportes");
+            System.out.println("6. Carga Masiva JSON");
             try {
                 opcion = entradaInteger.nextInt();
             } catch (Exception e) {
@@ -163,42 +164,46 @@ public class Main {
 //                            System.out.println();
                             break;
                         case 2:
-                            // Leer en String
-                            String datos = new String(Files.readAllBytes(Paths.get("./informacion.json")));
-
-                            // Leer JSON
-                            JSONArray jArray = new JSONArray(datos);
-                            for(int i = 0; i < jArray.length(); i++){
-
-                                JSONObject object = jArray.getJSONObject(i);
-
-                                Integer ticketJson = object.getInt("ticket");
-                                Object nitJson = object.get("nitUsuario");
-                                String mensajeJson = object.getString("problema");
-                                String colaJson = object.getString("cola");
-
-                                String nitJsonFinal = "";
-
-                                if(nitJson instanceof Integer){
-                                    nitJsonFinal = nitJson.toString();
-                                } else {
-                                    nitJsonFinal = nitJson.toString();
-                                }
-
-                                //Crear Ticket
-                                Tickets ticketCrearMasivo = controladorTicket.agregarTicketMasivo(nitJsonFinal, mensajeJson, colaJson);
-                                colaTickets.agregarCola(ticketCrearMasivo);
-
-                                //Crear Bitacora
-                                Bitacora bitCreadaMasivo = ControladorBitacora.agregarBitacora(ticketCrearMasivo.getTicketId(),String.valueOf(nitIngreso));
-                                colaBitacora.agregarColaBitacora(bitCreadaMasivo);
-
-                            }
+                            colaTickets.reporteColas();
                             break;
                         case 3:
+                            colaTickets.repoteTicketsUsuario(nitIngreso);
                             break;
                     }
 
+                    break;
+                case 6:
+                    // Leer en String
+                    String datos = new String(Files.readAllBytes(Paths.get("./informacion.json")));
+
+                    // Leer JSON
+                    JSONArray jArray = new JSONArray(datos);
+                    for(int i = 0; i < jArray.length(); i++){
+
+                        JSONObject object = jArray.getJSONObject(i);
+
+//                        Integer ticketJson = object.getInt("ticket");
+                        Object nitJson = object.get("nitUsuario");
+                        String mensajeJson = object.getString("problema");
+                        String colaJson = object.getString("cola");
+
+                        String nitJsonFinal = "";
+
+                        if(nitJson instanceof Integer){
+                            nitJsonFinal = nitJson.toString();
+                        } else {
+                            nitJsonFinal = nitJson.toString();
+                        }
+
+                        //Crear Ticket
+                        Tickets ticketCrearMasivo = controladorTicket.agregarTicketMasivo(nitJsonFinal, mensajeJson, colaJson);
+                        colaTickets.agregarCola(ticketCrearMasivo);
+
+                        //Crear Bitacora
+                        Bitacora bitCreadaMasivo = ControladorBitacora.agregarBitacora(ticketCrearMasivo.getTicketId(),String.valueOf(nitIngreso));
+                        colaBitacora.agregarColaBitacora(bitCreadaMasivo);
+
+                    }
                     break;
             }
 

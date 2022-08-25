@@ -20,51 +20,13 @@ public class ManejoColas {
         return pArray;
     }
 
-    public Tickets getLIFO (){
-        if(!pArray.isEmpty()){
-            Tickets t = pArray.get(pArray.size()-1);
-            return t;
-        } else {
-            return null;
-        }
-    }
-
-    public Tickets eliminarLIFO (){
-        if(!pArray.isEmpty()){
-            Tickets t = pArray.get(pArray.size()-1);
-            pArray.remove(pArray.size()-1);
-            return t;
-        } else {
-            return null;
-        }
-    }
-
-    public Tickets getFIFO (){
-        if(!pArray.isEmpty()){
-            Tickets t = pArray.get(0);
-            return t;
-        } else {
-            return null;
-        }
-    }
-
-    public Tickets eliminarFIFO (){
-        if(!pArray.isEmpty()){
-            Tickets t = pArray.get(0);
-            pArray.remove(0);
-            return t;
-        } else {
-            return null;
-        }
-    }
-
     public String escalarTicket(Tickets ticketEscalado, String nitSoporte){
         Integer iArray = getIndexCola(ticketEscalado.getTicketId());
-        if(ticketEscalado.getTipoCola().equals("Mesa de Ayuda") && ticketEscalado.getEstado() != "Resuelto" && ticketEscalado.getEstado() != "Asignado"){
-            pArray.get(iArray).setTipoCola("Soporte Tecnico");
+        if(ticketEscalado.getTipoCola().equals("mesa") && ticketEscalado.getEstado() != "Resuelto" && ticketEscalado.getEstado() != "Asignado"){
+            pArray.get(iArray).setTipoCola("soporte");
             return "Soporte Tecnico";
-        } else if (ticketEscalado.getTipoCola() == "Soporte Tecnico" && ticketEscalado.getEstado() != "Resuelto" && ticketEscalado.getEstado() != "Asignado") {
-            pArray.get(iArray).setTipoCola("Desarrollador");
+        } else if (ticketEscalado.getTipoCola() == "soporte" && ticketEscalado.getEstado() != "Resuelto" && ticketEscalado.getEstado() != "Asignado") {
+            pArray.get(iArray).setTipoCola("desarrollo");
             return "Desarrollador";
         } else{
             return null;
@@ -83,7 +45,7 @@ public class ManejoColas {
         int randNumPos = (int)(Math.random() * ((arrayAsignar.size()-1 - 0) + 1)) + 0;
 
         if(arrayAsignar.size() > 0){
-            if(arrayAsignar.get(0).getTipoCola() == "Mesa de Ayuda") {
+            if(arrayAsignar.get(0).getTipoCola() == "mesa") {
                 String formatoTabla = "| %-8d | %-40s | %-16s |%-16s |%n";
 
                 System.out.println("+----------+------------------------------------------+------------------+-----------------+");
@@ -100,7 +62,7 @@ public class ManejoColas {
                 System.out.println("");
 
                 return arrayAsignar.get(0).getTicketId();
-            } else if (arrayAsignar.get(arrayAsignar.size()-1).getTipoCola() == "Soporte Tecnico") {
+            } else if (arrayAsignar.get(arrayAsignar.size()-1).getTipoCola() == "soporte") {
                 String formatoTabla = "| %-8d | %-40s | %-16s |%-16s |%n";
 
                 System.out.println("+----------+------------------------------------------+------------------+-----------------+");
@@ -116,7 +78,7 @@ public class ManejoColas {
                 System.out.println("");
 
                 return arrayAsignar.get(arrayAsignar.size()-1).getTicketId();
-            } else if (arrayAsignar.get(randNumPos).getTipoCola() == "Desarrollador") {
+            } else if (arrayAsignar.get(randNumPos).getTipoCola() == "desarrollo") {
                 String formatoTabla = "| %-8d | %-40s | %-16s |%-16s |%n";
 
                 System.out.println("+----------+------------------------------------------+------------------+-----------------+");
@@ -162,6 +124,7 @@ public class ManejoColas {
 
             Integer iArray = getIndexCola(tAsignado.get(0).getTicketId());
             pArray.get(iArray).setEstado("Resuelto");
+            pArray.get(iArray).setTipoCola("Resuelto");
 
             return bitResuelta;
         } else {
@@ -208,6 +171,136 @@ public class ManejoColas {
 
         System.out.println("+----------+------------------------------------------+------------------+-----------------+");
     }
+
+    //Reporte Ticket por Usuario
+    public void repoteTicketsUsuario(String nitUsuario){
+        //Filtro Array Tickets Id
+        ArrayList<Tickets> ticketArrayUsuario = new ArrayList();
+        for(int i = 0; i < pArray.size(); i++){
+            if(pArray.get(i).getNitUsuario().equals(nitUsuario)){
+                ticketArrayUsuario.add(pArray.get(i));
+            }
+        }
+
+
+        String formatoTabla = "| %-8d | %-16s  | %-40s | %-16s |%-16s |%n";
+
+        System.out.println("+----------+-----------------+------------------------------------------+------------------+-----------------+");
+        System.out.println("|Id Ticket | Nit             | Descripcion                               | Tipo Cola        | Estado          |");
+        System.out.println("+----------+-----------------+------------------------------------------+------------------+-----------------+");
+
+        for (int i=0; i< ticketArrayUsuario.size(); i++){
+            System.out.format(formatoTabla, ticketArrayUsuario.get(i).getTicketId(), ticketArrayUsuario.get(i).getNitUsuario() ,ticketArrayUsuario.get(i).getDescipcionTicket(),
+                    ticketArrayUsuario.get(i).getTipoCola(), ticketArrayUsuario.get(i).getEstado());
+        }
+
+        System.out.println("+----------+------------------------------------------+------------------+-----------------+");
+    }
+
+
+    //REporte de colas.
+    public void reporteColas (){
+        String formatoTabla = "| %-8d | %-16s  | %-40s | %-16s |%-16s |%n";
+
+        //Filtro Array Tickets Id
+        ArrayList<Tickets> colaMesaAyuda = new ArrayList();
+        ArrayList<Tickets> colaSoporteTec = new ArrayList();
+        ArrayList<Tickets> colaDesarrollo = new ArrayList();
+        ArrayList<Tickets> colaAsignado = new ArrayList();
+        ArrayList<Tickets> colaResuelto = new ArrayList();
+
+        //Filtro MesaAyuda
+        for(int i = 0; i < pArray.size(); i++){
+            if(pArray.get(i).getTipoCola().equals("mesa")){
+                colaMesaAyuda.add(pArray.get(i));
+            }
+        }
+
+        if(colaMesaAyuda.size() > 0) {
+            System.out.println("+----------+-----------------+------------------------------------------+------------------+-----------------+");
+            System.out.println("|Id Ticket | Nit             | Descripcion                               | Tipo Cola        | Estado          |");
+            System.out.println("+----------+-----------------+------------------------------------------+------------------+-----------------+");
+
+            for (int i=0; i< colaMesaAyuda.size(); i++){
+                System.out.format(formatoTabla, colaMesaAyuda.get(i).getTicketId(), colaMesaAyuda.get(i).getNitUsuario() ,colaMesaAyuda.get(i).getDescipcionTicket(),
+                        colaMesaAyuda.get(i).getTipoCola(), colaMesaAyuda.get(i).getEstado());
+            }
+
+            System.out.println("+----------+------------------------------------------+------------------+-----------------+");
+        } else {
+            System.out.println("No hay tickets en la Cola Mesa de Ayuda .");
+        }
+
+        //Filtro SoporteTec
+        for(int i = 0; i < pArray.size(); i++){
+            if(pArray.get(i).getTipoCola().equals("soporte")){
+                colaSoporteTec.add(pArray.get(i));
+            }
+        }
+
+        if(colaSoporteTec.size() > 0) {
+            System.out.println("+----------+-----------------+------------------------------------------+------------------+-----------------+");
+            System.out.println("|Id Ticket | Nit             | Descripcion                               | Tipo Cola        | Estado          |");
+            System.out.println("+----------+-----------------+------------------------------------------+------------------+-----------------+");
+
+            for (int i=0; i< colaSoporteTec.size(); i++){
+                System.out.format(formatoTabla, colaSoporteTec.get(i).getTicketId(), colaSoporteTec.get(i).getNitUsuario() ,colaSoporteTec.get(i).getDescipcionTicket(),
+                        colaSoporteTec.get(i).getTipoCola(), colaSoporteTec.get(i).getEstado());
+            }
+
+            System.out.println("+----------+------------------------------------------+------------------+-----------------+");
+        } else {
+            System.out.println("No hay tickets en la Cola Soporte Tecnico.");
+        }
+
+        //Filtro Desarrollador
+        for(int i = 0; i < pArray.size(); i++){
+            if(pArray.get(i).getTipoCola().equals("desarrollo")){
+                colaDesarrollo.add(pArray.get(i));
+            }
+        }
+
+        if(colaDesarrollo.size() > 0) {
+            System.out.println("+----------+-----------------+------------------------------------------+------------------+-----------------+");
+            System.out.println("|Id Ticket | Nit             | Descripcion                               | Tipo Cola        | Estado          |");
+            System.out.println("+----------+-----------------+------------------------------------------+------------------+-----------------+");
+
+            for (int i=0; i< colaDesarrollo.size(); i++){
+                System.out.format(formatoTabla, colaDesarrollo.get(i).getTicketId(), colaDesarrollo.get(i).getNitUsuario() ,colaDesarrollo.get(i).getDescipcionTicket(),
+                        colaDesarrollo.get(i).getTipoCola(), colaDesarrollo.get(i).getEstado());
+            }
+
+            System.out.println("+----------+------------------------------------------+------------------+-----------------+");
+        } else {
+            System.out.println("No hay tickets en la Cola Desarrollador.");
+        }
+
+        //Filtro Resuelto
+        for(int i = 0; i < pArray.size(); i++){
+            if(pArray.get(i).getTipoCola().equals("Resuelto")){
+                colaResuelto.add(pArray.get(i));
+            }
+        }
+
+        if(colaResuelto.size() > 0) {
+            System.out.println("+----------+-----------------+------------------------------------------+------------------+-----------------+");
+            System.out.println("|Id Ticket | Nit             | Descripcion                               | Tipo Cola        | Estado          |");
+            System.out.println("+----------+-----------------+------------------------------------------+------------------+-----------------+");
+
+            for (int i=0; i< colaResuelto.size(); i++){
+                System.out.format(formatoTabla, colaResuelto.get(i).getTicketId(), colaResuelto.get(i).getNitUsuario() ,colaResuelto.get(i).getDescipcionTicket(),
+                        colaResuelto.get(i).getTipoCola(), colaResuelto.get(i).getEstado());
+            }
+
+            System.out.println("+----------+------------------------------------------+------------------+-----------------+");
+        } else {
+            System.out.println("No hay tickets en la Cola Resuelto.");
+        }
+
+
+    }
+
+
 
     public Bitacora resolverEstadoTicket(Tickets ticketEscalado, String nitSoporte, String mensajeBitacora){
         Integer iArray = getIndexCola(ticketEscalado.getTicketId());
