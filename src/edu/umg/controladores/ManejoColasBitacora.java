@@ -6,16 +6,30 @@ import java.util.ArrayList;
 
 public class ManejoColasBitacora {
 
+    /**
+     * Array de Bitacoras
+     */
     public ArrayList<Bitacora> bitacoraArray = new ArrayList();
 
+    /**
+     * Agrega Bitacora a Array
+     * @param bitVariable
+     */
     public void agregarColaBitacora (Bitacora bitVariable){
         bitacoraArray.add(bitVariable);
     }
 
+    /**
+     * @return array de Bitacoras
+     */
     public ArrayList<Bitacora> getBitacorasArray(){
         return bitacoraArray;
     }
 
+    /**
+     * Muestra las Bitacoras por Ticket
+     * @param idTicket
+     */
     public void mostrarBitacorasXTicket(Integer idTicket){
         //Filtrar Array y devolver bitacora conforme al ticket
         ArrayList<Bitacora> bitArrayFiltro = new ArrayList();

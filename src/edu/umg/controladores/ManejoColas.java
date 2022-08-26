@@ -8,18 +8,33 @@ import java.util.Scanner;
 
 public class ManejoColas {
 
+    /**
+     * Array de Tickets
+     */
     private ArrayList<Tickets> pArray = new ArrayList();
 
-    //Agreagr a Array
+    /***
+     * Agreagr Ticket a Array
+     * @param ticket a agregar
+     */
     public void agregarCola (Tickets ticket){
         pArray.add(ticket);
     }
 
-    //Devolver Array
+    /***
+     * Devolver Array
+     * @return Array Tickets con todos los datos
+     */
     public ArrayList<Tickets> getTicketsArray(){
         return pArray;
     }
 
+    /**
+     * Escala el Ticket al siguiente nivel
+     * @param ticketEscalado Id Ticket
+     * @param nitSoporte
+     * @return String, tipo de cola escalado
+     */
     public String escalarTicket(Tickets ticketEscalado, String nitSoporte){
         Integer iArray = getIndexCola(ticketEscalado.getTicketId());
         if(ticketEscalado.getTipoCola().equals("mesa") && ticketEscalado.getEstado() != "Resuelto" && ticketEscalado.getEstado() != "Asignado"){
@@ -33,7 +48,11 @@ public class ManejoColas {
         }
     }
 
-    //Asignar Ticket
+    /**
+     * Asignar Ticket
+     * @param rolIngreso
+     * @return Ticket Index Array
+     */
     public Integer asignarTicket(String rolIngreso){
         ArrayList<Tickets> arrayAsignar = new ArrayList();
         for (int i=0; i< pArray.size(); i++){
@@ -102,7 +121,12 @@ public class ManejoColas {
         }
     }
 
-    //Solucion Ticket
+    /**
+     * Solucion Ticket
+     * @param tAsignado
+     * @param nitIngreso
+     * @return Bitacora de Solucion Ticket
+     */
     public Bitacora solucionTicket(ArrayList<Tickets> tAsignado,String nitIngreso) {
         if(tAsignado.size() > 0){
             Scanner lecturaCadena = new Scanner(System.in);
@@ -133,7 +157,11 @@ public class ManejoColas {
     }
 
 
-    //Mostrar todos los tickets
+    //
+
+    /***
+     *Mostrar todos los tickets
+     */
     public void mostrarTickets (){
         String formatoTabla = "| %-8d | %-40s | %-16s |%-16s |%n";
 
@@ -147,7 +175,11 @@ public class ManejoColas {
         System.out.println("+----------+------------------------------------------+------------------+-----------------+");
     }
 
-    // Mostrar un ticket
+
+    /***
+     *Mostrar un ticket
+     * @param idTicket
+     */
     public void mostrarIdTickets (Integer idTicket){
         //Filtro Array Tickets Id
         ArrayList<Tickets> ticketArrayFiltro = new ArrayList();
@@ -172,7 +204,10 @@ public class ManejoColas {
         System.out.println("+----------+------------------------------------------+------------------+-----------------+");
     }
 
-    //Reporte Ticket por Usuario
+    /***
+     *  Reporte Ticket por Usuario
+     * @param nitUsuario
+     */
     public void repoteTicketsUsuario(String nitUsuario){
         //Filtro Array Tickets Id
         ArrayList<Tickets> ticketArrayUsuario = new ArrayList();
@@ -198,7 +233,9 @@ public class ManejoColas {
     }
 
 
-    //REporte de colas.
+    /**
+     * Reporte de colas
+     */
     public void reporteColas (){
         String formatoTabla = "| %-8d | %-16s  | %-40s | %-16s |%-16s |%n";
 
@@ -301,7 +338,13 @@ public class ManejoColas {
     }
 
 
-
+    /**
+     * Cambia el Estado del Ticket a resuelto y genera Bitacora.
+     * @param ticketEscalado
+     * @param nitSoporte
+     * @param mensajeBitacora
+     * @return Retorna la Bitacora
+     */
     public Bitacora resolverEstadoTicket(Tickets ticketEscalado, String nitSoporte, String mensajeBitacora){
         Integer iArray = getIndexCola(ticketEscalado.getTicketId());
         pArray.get(iArray).setEstado("Resuelto");
@@ -310,7 +353,11 @@ public class ManejoColas {
         return camEstadoBit;
     }
 
-    //Obtener Ticket por ID
+    /**
+     * Obtener Ticket por ID
+     * @param idTicket
+     * @return Ticket encontrado o null
+     */
     public Tickets getIdTicket (Integer idTicket){
         boolean encontrado = false;
         Tickets ticketEncontrado = new Tickets();
@@ -332,7 +379,11 @@ public class ManejoColas {
     }
 
 
-    //Obtener Index del Array.
+    /**
+     * Obtener Index del Array.
+     * @param idTicket
+     * @return Integer, index del ticket
+     */
     public Integer getIndexCola (Integer idTicket){
         boolean encontrado = false;
         Integer ticketEncontrado = 0;
