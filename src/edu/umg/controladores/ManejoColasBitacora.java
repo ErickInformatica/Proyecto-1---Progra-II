@@ -4,7 +4,7 @@ import edu.umg.modelos.Bitacora;
 
 import java.util.ArrayList;
 
-public class ManejoColasBitacora {
+public class ManejoColasBitacora extends ControladorBitacora {
 
     /**
      * Array de Bitacoras
@@ -40,14 +40,14 @@ public class ManejoColasBitacora {
         }
 
 
-        String formatoTabla = "| %-8d | %-16s |%-40s | %-26s |%-16s |%n";
+        String formatoTabla = "| %-8s | %-16s |%-40s | %-26s |%-16s |%n";
 
         System.out.println("+----------+-----------------+------------------------------------------+----------------------------+-----------------+");
         System.out.println("|Id Ticket | Nit Soporte     | Mensaje                                  | Fecha Bitacora             | Evento          |");
         System.out.println("+----------+-----------------+------------------------------------------+----------------------------+-----------------+");
 
         for (int i=0; i< bitArrayFiltro.size(); i++){
-            System.out.format(formatoTabla, bitArrayFiltro.get(i).getTicket(), bitArrayFiltro.get(i).getNitSoporte(), bitArrayFiltro.get(i).getMensaje(),
+            System.out.format(formatoTabla, String.format("%06d", bitArrayFiltro.get(i).getTicket()), bitArrayFiltro.get(i).getNitSoporte(), bitArrayFiltro.get(i).getMensaje(),
                     bitArrayFiltro.get(i).getFechaBitacora(), bitArrayFiltro.get(i).getEvento());
         }
         System.out.println("+----------+-----------------+------------------------------------------+----------------------------+-----------------+");

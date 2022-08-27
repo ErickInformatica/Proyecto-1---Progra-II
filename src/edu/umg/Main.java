@@ -30,10 +30,7 @@ public class Main {
         ManejoColasBitacora colaBitacora = new ManejoColasBitacora();
         ControladorTicket controladorTicket = new ControladorTicket();
 
-
-
         Scanner lecturaCadena = new Scanner(System.in);
-
 
         System.out.println("Bienvenido al Sistema de Tickets, ingrese sus datos al sistema.");
 
@@ -46,7 +43,6 @@ public class Main {
         String rolIngreso = "";
         while (exit != 1) {
             rolIngreso = lecturaCadena.nextLine();
-            System.out.println(rolIngreso == "Soporte Tecnico");
             //Verifica el ingreso de un rol valido
             if(rolIngreso.equals("mesa")  || rolIngreso.equals("soporte") || rolIngreso.equals("desarrollo")) {
                 exit = 1;
@@ -139,7 +135,8 @@ public class Main {
 
                             Bitacora bitAsignada = ControladorBitacora.resueltoBitacora(ticketsAsignados.get(0).getTicketId(), nitIngreso);
                             colaBitacora.agregarColaBitacora(bitAsignada);
-                            System.out.println("Ticket Asignado con Exito.");
+                            ticketsAsignados.remove(0);
+                            System.out.println("Ticket Solucionado con Exito.");
                         } else {
                             System.out.println("No tiene un ticket asignado.");
                         }
@@ -203,7 +200,11 @@ public class Main {
                         Bitacora bitCreadaMasivo = ControladorBitacora.agregarBitacora(ticketCrearMasivo.getTicketId(),String.valueOf(nitIngreso));
                         colaBitacora.agregarColaBitacora(bitCreadaMasivo);
 
+
+
                     }
+                    System.out.println("");
+                    System.out.println("Tickets, cargados correctamente.");
                     break;
             }
 

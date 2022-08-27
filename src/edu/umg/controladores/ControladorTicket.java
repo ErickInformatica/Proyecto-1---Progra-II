@@ -15,7 +15,7 @@ public class ControladorTicket {
      * @return Ticket agregado a Cola Mesa de Ayuda
      */
     public Tickets agregarTicket(String nitUsuario, String descripcionTicket){
-        Tickets ticketCreado = new Tickets(String.valueOf(nitUsuario), descripcionTicket, "Mesa de Ayuda", "Creado");
+        Tickets ticketCreado = new Tickets(String.valueOf(nitUsuario), descripcionTicket, "mesa", "Creado");
         return ticketCreado;
     }
 
