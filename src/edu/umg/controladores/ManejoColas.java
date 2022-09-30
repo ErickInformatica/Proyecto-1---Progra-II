@@ -106,7 +106,7 @@ public class ManejoColas {
                 bitTableAsigSoporte.addCell("Tipo Cola");
                 bitTableAsigSoporte.addCell("Estado");
 
-                bitTableAsigSoporte.addCell(String.format("%06d", arrayAsignar.get(0).getTicketId()));
+                bitTableAsigSoporte.addCell(String.format("%06d", arrayAsignar.get(posArray).getTicketId()));
                 bitTableAsigSoporte.addCell(arrayAsignar.get(posArray).getNitUsuario());
                 bitTableAsigSoporte.addCell(arrayAsignar.get(posArray).getDescipcionTicket());
                 bitTableAsigSoporte.addCell(arrayAsignar.get(posArray).getTipoCola());
